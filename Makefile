@@ -8,18 +8,17 @@ CXXFLAGS = -c
 # file names
 functions := functions.cpp
 driver := driver.cpp
-sorter := Classes/sorter.cpp
-playlist := Classes/playlist.cpp
-files := ${functions} ${driver} ${playlist} ${sorter}
+data := data.cpp
+files := ${functions} ${driver} ${data}
 
 # object names
-output := PlaylistSorter
+output := 
 all := all
 driverout := driver.o
 functionsout := functions.o
-sorterout := sorter.o
+dataout := data.o
 playlistout := playlist.o
-objects := ${driverout} ${functionsout} ${sorterout} ${playlistout}
+objects := ${driverout} ${functionsout} ${dataout}
 
 # Detect OS for clean
 ifdef OS
@@ -44,11 +43,8 @@ ${functionsout}: ${functions}
 	${CXX} ${CXXFLAGS} ${functions} -o ${functionsout}
 
 # Compile classes
-${sorterout}: ${sorter}
-	${CXX} ${CXXFLAGS} ${sorter} -o ${sorterout}
-
-${playlistout}: ${playlist}
-	${CXX} ${CXXFLAGS} ${playlist} -o ${playlistout}
+${dataout}: ${data}
+	${CXX} ${CXXFLAGS} ${data} -o ${dataout}
 
 # Make clean (Removes files)
 clean:

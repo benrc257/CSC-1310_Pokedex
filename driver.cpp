@@ -8,6 +8,8 @@
 */
 
 #include "main.h"
+#include "../pokemon.h"
+#include "../pokedex.h"
 
 int main() {
     // Variables
