@@ -16,5 +16,20 @@
 
 #include "../main.h"
 
+template <typename T>
+class Tree {
+    private:
+        struct Node {
+            Node *left, *right;
+            T value;
+        };
+
+        
+
+    public:
+
+
+
+};
 
 #endif
