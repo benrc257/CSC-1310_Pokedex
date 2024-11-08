@@ -8,11 +8,13 @@
 */
 
 #include "main.h"
-#include "../pokemon.h"
-#include "../pokedex.h"
+#include "Classes/pokemon.h"
+#include "Classes/pokedex.h"
 
 int main() {
-    // Variables
+    cout << LINE << "/n LOADING YOUR POKEMON";
+
+
 
     
 

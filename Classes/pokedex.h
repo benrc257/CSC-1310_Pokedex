@@ -56,7 +56,7 @@ class Pokedex {
     public:
         // Tree functions
         void insert(Node<Y>* insert, Node<Y>* position);
-        void append(Node<Y>* append);
+        bool append(Node<Y>* append);
         void remove(Node<Y>* removing);
         
         //getters
@@ -101,7 +101,7 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
 // append: searches the tree and appends a new node at its intendid position
 template <typename Y>
-void Pokedex<Y>::append(Node<Y>* append) {
+bool Pokedex<Y>::append(Node<Y>* append) {
     Node<Y>* check = root;
     // If root is empty, insert at the root
     if (root == nullptr) {
@@ -113,14 +113,14 @@ void Pokedex<Y>::append(Node<Y>* append) {
         if (check->pokemon > append->pokemon) { // Larger goes on the left
             if (check->left == nullptr) { // If left is empty, insert here
                 check->left = append;
-                return; // End early
+                return 1; // End early
             } else { // Otherwise, continue traversing left
                 check = check->left;
             }
         } else if (check->pokemon < append->pokemon) { // Smaller goes on the right
             if (check->right == nullptr) { // If right is empty, insert here
                 check->right = append;
-                return; // End early
+                return 1; // End early
             } else { // Otherwise, continue traversing right
                 check = check->right;
             }
@@ -128,7 +128,7 @@ void Pokedex<Y>::append(Node<Y>* append) {
             std::cout << "\n------------------- ERROR ----------------------\n"
                       << "  A Pokemon already exists with the same entry\n"
                       << "------------------------------------------------\n";
-            return;
+            return 0;// end with false
         }
     }
 }
