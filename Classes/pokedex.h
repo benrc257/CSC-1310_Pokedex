@@ -51,7 +51,7 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
 };
 
-
+// append: searches the tree and appends a new node at its intendid position
 template <typename Y>
 void Pokedex<Y>::append(Node<Y>* append) {
     Node<Y>* check = root;
