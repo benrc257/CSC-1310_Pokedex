@@ -17,8 +17,9 @@
     - Read from file
 
     To Test:
-    - Remove
     - Append
+    - Import
+    - Remove
     - getByIndex
 
     ---- DONE! ----
@@ -63,7 +64,7 @@ class Pokedex {
         Node<Y>* getByIndex(int index);
 
         //setters
-        void import(string Filename, char delim);
+        void import(string Filename, char delim, Y pokemon);
         
 
 
@@ -134,7 +135,7 @@ void Pokedex<Y>::append(Node<Y>* append) {
 
 // import: overload to handle importing from a file;
 template <typename Y>
-void import(string filename, char delim, Y pokemon){
+void Pokedex<Y>::import(string filename, char delim, Y pokemon){
     string temp1,temp2;
     fstream file;
     file.open(filename);
