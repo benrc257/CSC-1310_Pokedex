@@ -23,7 +23,7 @@
 
     public:
         //constructor
-            Pokemon(int id, string name);
+            Pokemon(string Name, int Id);
         //getters
             int    getId();
             string getName();

@@ -51,6 +51,7 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
 };
 
+
 template <typename Y>
 void Pokedex<Y>::append(Node<Y>* append) {
     Node<Y>* check = root;
