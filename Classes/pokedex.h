@@ -1,5 +1,6 @@
 /*
     TREE CLASS
+    --------------------------------------------------
     Requirements:
     - Private Root Node
     - Private Node Struct
@@ -9,6 +10,22 @@
     - Remove Function (by index or value)
     - Public Friend Function (operator <<)
     - Constructor, Destructor
+
+    To Do:
+    - Insert
+    - Destructor
+    - Read from file
+
+    To Test:
+    - Remove
+    - Append
+    - getByIndex
+
+    ---- DONE! ----
+    - Public Friend Function (operator <<)
+    - Private Root Node
+    - Private Node Struct
+   
 */
 
 #ifndef POKEDEX_H
@@ -22,25 +39,36 @@ template <typename X>
 struct Node {
     Node *left, *right, *parent;
     X pokemon;
-
+    Node(Node* left, Node* right,Node* parent, X object){
+        this->left = left;
+        this->right = right;
+        this->parent = parent;
+        this->pokemon = object;
+    }
 };
 
 template <typename Y>
 class Pokedex {
     private:
         Node<Y>* root;
-        vector<Node<Y>*> pokedex;
+        vector<Node<Y>*> pokedex; 
     public:
         // Tree functions
         void insert(Node<Y>* insert, Node<Y>* position);
         void append(Node<Y>* append);
         void remove(Node<Y>* removing);
+        
+        //getters
         Node<Y>* getRoot();
+        Node<Y>* getByIndex(int index);
 
+        //setters
+        void import(string Filename, char delim);
         
 
 
 };
+
 
 template <typename Y>
 Node<Y>* Pokedex<Y>::getRoot() {
@@ -48,6 +76,24 @@ Node<Y>* Pokedex<Y>::getRoot() {
 }
 
 template <typename Y>
+Node<Y>* Pokedex<Y>::getByIndex(int index) {
+    Node<Y>* check = root;
+
+    while ((check->left != nullptr) || (check->right != nullptr)))
+    {
+        if (check->pokemon.id == index){
+            return check; // return if found
+        } else if (check->pokemon.id > index){
+            check = check.left; // left if bigger
+        } else {
+            check = check.right; // right if smaller
+        } 
+    }
+}
+
+
+
+template <typename Y> //TODO
 void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
 };
@@ -85,6 +131,25 @@ void Pokedex<Y>::append(Node<Y>* append) {
         }
     }
 }
+
+// import: overload to handle importing from a file;
+template <typename Y>
+void import(string filename, char delim, Y pokemon){
+    string temp1,temp2;
+    fstream file;
+    file.open(filename);
+
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return;
+    }
+
+    while (getline(file,temp1,delim) && getline(file,temp2,delim)){
+        *Node<Y> newNode = new *Node<Y>(nullptr,nullptr,nullptr,pokemon(temp2,temp1));
+        append(newNode);
+    }
+  
+};
 
 template <typename Y>
 void Pokedex<Y>::remove(Node<Y>* removing) {
