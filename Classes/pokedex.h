@@ -22,6 +22,7 @@ template <typename X>
 struct Node {
     Node *left, *right, *parent;
     X pokemon;
+
 };
 
 template <typename Y>
@@ -86,10 +87,70 @@ void Pokedex<Y>::append(Node<Y>* append) {
 }
 
 template <typename Y>
-void Pokedex<Y>::remove(Node<Y>* removing){
+void Pokedex<Y>::remove(Node<Y>* removing) {
+    if (removing == nullptr) return;
 
-    
-};
+    // Case 1: Node is a leaf (no children)
+    if (removing->left == nullptr && removing->right == nullptr) {
+        if (removing->parent) {
+            if (removing->parent->left == removing) {
+                removing->parent->left = nullptr;
+            } else {
+                removing->parent->right = nullptr;
+            }
+        } else {
+            root = nullptr; // If it's the root node
+        }
+        delete removing;
+        return;
+
+    // Case 2: Node has only one child
+    } else if (removing->left != nullptr && removing->right == nullptr) { // Only left child
+        if (removing->parent) {
+            if (removing->parent->left == removing) {
+                removing->parent->left = removing->left;
+            } else {
+                removing->parent->right = removing->left;
+            }
+            removing->left->parent = removing->parent;
+        } else {
+            root = removing->left; // If it's the root node
+            root->parent = nullptr;
+        }
+        delete removing;
+        return;
+
+    } else if (removing->left == nullptr && removing->right != nullptr) { // Only right child
+        if (removing->parent) {
+            if (removing->parent->left == removing) {
+                removing->parent->left = removing->right;
+            } else {
+                removing->parent->right = removing->right;
+            }
+            removing->right->parent = removing->parent;
+        } else {
+            root = removing->right; // If it's the root node
+            root->parent = nullptr;
+        }
+        delete removing;
+        return;
+
+    // Case 3: Node has two children
+    } else {
+        // Find the in-order successor (smallest node in the right subtree)
+        Node<Y>* successor = removing->right;
+        while (successor->left != nullptr) {
+            successor = successor->left;
+        }
+
+        // Copy the successor's data to the node to be deleted
+        removing->pokemon = successor->pokemon;
+
+        // Recursively delete the successor, which now has at most one child
+        remove(successor);
+    }
+}
+
 
 
 #endif
