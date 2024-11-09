@@ -8,6 +8,10 @@
         "unordered_map": "cpp",
         "vector": "cpp",
         "__hash_table": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp"
     }
 }

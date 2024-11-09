@@ -33,31 +33,32 @@
 #define POKEDEX_H
 
 #include "../main.h"
-#include "pokemon.h"
+//#include "pokemon.h"
 
 
 template <typename X>
 struct Node {
     Node *left, *right, *parent;
-    X pokemon;
+    X object;
     Node(Node* left, Node* right,Node* parent, X object){
         this->left = left;
         this->right = right;
         this->parent = parent;
-        this->pokemon = object;
+        this->object = object;
     }
 };
 
 template <typename Y>
 class Pokedex {
     private:
-        Node<Y>* root;
-        vector<Node<Y>*> pokedex; 
+        Node<Y>* root; 
     public:
         // Tree functions
         void insert(Node<Y>* insert, Node<Y>* position);
-        bool append(Node<Y>* append);
+        bool appendPokemon(string Name, int Id);
+        bool appendNode(Node<Y>* append);
         void remove(Node<Y>* removing);
+        void inOrderTraversal(Node<Y>* node);
 
         //util
         void display();
@@ -70,6 +71,11 @@ class Pokedex {
         void import(string Filename, char delim, Y pokemon);
         
 
+        ~Pokedex() {
+            for (Node<Y>* node : pokedex) {
+                delete node;  
+            }
+        }
 
 };
 
@@ -83,16 +89,17 @@ template <typename Y>
 Node<Y>* Pokedex<Y>::getByIndex(int index) {
     Node<Y>* check = root;
 
-    while ((check->left != nullptr) || (check->right != nullptr)))
+    while ((check != nullptr))// if not end
     {
-        if (check->pokemon.id == index){
+        if (check->object.id == index){
             return check; // return if found
-        } else if (check->pokemon.id > index){
+        } else if (check->object.id > index){
             check = check->left; // left if bigger
         } else {
             check = check->right; // right if smaller
         } 
     }
+    return nullptr;
 }
 
 
@@ -102,36 +109,47 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
 };
 
-// append: searches the tree and appends a new node at its intendid position
+// append pokemon, makes a pokemon object then calls append node
 template <typename Y>
-bool Pokedex<Y>::append(Node<Y>* append) {
+bool Pokedex<Y>::appendPokemon(string name,int id){
+    Node<Y>* newNode = new Node<Y>(nullptr, nullptr, nullptr, Y(name, id));
+        bool success = appendNode(newNode);
+    if (!success) {
+        delete newNode;  // Free memory if appending fails
+    }
+    return success;
+};
+
+// appendNode: searches the tree and appends a new node at its intendid position
+template <typename Y>
+bool Pokedex<Y>::appendNode(Node<Y>* append) {
     Node<Y>* check = root;
     // If root is empty, insert at the root
     if (root == nullptr) {
         root = append;
-        return;
+        return true;
     }
 
     while (check != nullptr) {
-        if (check->pokemon > append->pokemon) { // Larger goes on the left
+        if (check->object > append->object) { // Larger goes on the left
             if (check->left == nullptr) { // If left is empty, insert here
                 check->left = append;
-                return 1; // End early
+                return true; // End early
             } else { // Otherwise, continue traversing left
                 check = check->left;
             }
-        } else if (check->pokemon < append->pokemon) { // Smaller goes on the right
+        } else if (check->object < append->object) { // Smaller goes on the right
             if (check->right == nullptr) { // If right is empty, insert here
                 check->right = append;
-                return 1; // End early
+                return true; // End early
             } else { // Otherwise, continue traversing right
                 check = check->right;
             }
-        } else { // Node with the same id exists
-            std::cout << "\n------------------- ERROR ----------------------\n"
+        } else if (check->object == append->object) { // Node with the same id exists
+               cout << "\n------------------- ERROR ----------------------\n"
                       << "  A Pokemon already exists with the same entry\n"
                       << "------------------------------------------------\n";
-            return 0;// end with false
+            return false;// end with false
         }
     }
 }
@@ -148,9 +166,8 @@ void Pokedex<Y>::import(string filename, char delim, Y pokemon){
         return;
     }
 
-    while (getline(file,temp1,delim) && getline(file,temp2,delim)){
-        *Node<Y> newNode = new *Node<Y>(nullptr,nullptr,nullptr,pokemon(temp2,temp1));
-        append(newNode);
+    while (getline(file,temp1,delim) && getline(file,temp2,delim)){ // constructs a new pokemon
+        appendPokemon(temp2,stoi(temp1));
     }
   
 };
@@ -213,7 +230,7 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
         }
 
         // Copy the successor's data to the node to be deleted
-        removing->pokemon = successor->pokemon;
+        removing->object = successor->object;
 
         // Recursively delete the successor, which now has at most one child
         remove(successor);
@@ -221,15 +238,16 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
 }
 
 template <typename Y>
-void Pokedex<Y>::display(){
-    bool end = false
-    do{
-    
+void Pokedex<Y>::inOrderTraversal(Node<Y>* node) {
+    if (node == nullptr) return;  // Base case: if node is null, return.
+    inOrderTraversal(node->left);// Traverse left subtree
+    cout << node->object;// Process current node (print object details)
+    inOrderTraversal(node->right);// Traverse right subtree
+}
 
-
-    
-    } while (end == false);
-    return; 
+template <typename Y>
+void Pokedex<Y>::display() {
+    inOrderTraversal(root);  // Start the in-order traversal from the root
 }
 
 

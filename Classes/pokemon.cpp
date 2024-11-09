@@ -1,5 +1,6 @@
-// Function definitions for data.h
 
+
+// Function definitions for data.h
 #include "../main.h"
 #include "pokemon.h"
 
