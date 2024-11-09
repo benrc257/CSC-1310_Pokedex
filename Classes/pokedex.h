@@ -250,9 +250,9 @@ void Pokedex<Y>::deleteTree(Node<Y>* node) {
         deleteTree(node->left);// Recursively delete left and right children
         deleteTree(node->right);
 
-        // Finally, delete the current node
-        delete node;
+        delete node;// Finally, delete the current node
     }
+    return;
 }
 
 #endif
