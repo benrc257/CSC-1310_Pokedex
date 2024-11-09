@@ -33,7 +33,7 @@
 #define POKEDEX_H
 
 #include "../main.h"
-//#include "pokemon.h"
+
 
 
 template <typename X>
@@ -69,8 +69,10 @@ class Pokedex {
         Node<Y>* getByIndex(int index);
 
         //setters
-        void import(string Filename, char delim, Y pokemon);
+        void import(string Filename, char delim);
         
+        //constructers && destructors
+        Pokedex()
 
         ~Pokedex() {
             deleteTree(root);
@@ -153,7 +155,7 @@ bool Pokedex<Y>::appendNode(Node<Y>* append) {
 
 // import: overload to handle importing from a file;
 template <typename Y>
-void Pokedex<Y>::import(string filename, char delim, Y pokemon){
+void Pokedex<Y>::import(string filename, char delim){
     string temp1,temp2;
     fstream file;
     file.open(filename);
