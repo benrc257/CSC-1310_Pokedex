@@ -58,6 +58,9 @@ class Pokedex {
         void insert(Node<Y>* insert, Node<Y>* position);
         bool append(Node<Y>* append);
         void remove(Node<Y>* removing);
+
+        //util
+        void display();
         
         //getters
         Node<Y>* getRoot();
@@ -85,9 +88,9 @@ Node<Y>* Pokedex<Y>::getByIndex(int index) {
         if (check->pokemon.id == index){
             return check; // return if found
         } else if (check->pokemon.id > index){
-            check = check.left; // left if bigger
+            check = check->left; // left if bigger
         } else {
-            check = check.right; // right if smaller
+            check = check->right; // right if smaller
         } 
     }
 }
@@ -217,6 +220,17 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
     }
 }
 
+template <typename Y>
+void Pokedex<Y>::display(){
+    bool end = false
+    do{
+    
+
+
+    
+    } while (end == false);
+    return; 
+}
 
 
 #endif

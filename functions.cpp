@@ -3,7 +3,7 @@
 #include "main.h"
 
 
-void mainMenu(){
+int mainMenu(){
     int choice;
     bool valid = 0;
 
@@ -16,35 +16,14 @@ void mainMenu(){
             << "\n enter a number between 1-4\n";
             cin >> choice;
             cin.ignore();
-
-        
-        switch (choice)
-        {
-        case 1 : // Display entries
             
-            
-            break;
-        case 2 : // Add a Pokemon
-           
-            
-            break;
-        case 3 : // Remove a Pokemon
-          
-            
-            break;
-        case 4 : // Add Pokemon From File
-            
-            
-            break;   
-        case 5 : // END
-            
-            
-            break;
-
-        default:
+            if(!((choice < 4) && (choice > 1))){
                 cout << "\n --- INVALID RESPONSE --- ";
                 return mainMenu();
-            break;
-        }
-       
+            } else {
+                return choice;
+            }
 };
+
+
+

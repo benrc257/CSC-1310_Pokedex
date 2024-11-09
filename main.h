@@ -21,6 +21,6 @@ using namespace std;
 const string LINE = "\n---------------------------------------------------------------------------------";
 
 // Functions(.cpp) Prototypes
-void mainMenu();
+int mainMenu();
 
 #endif
