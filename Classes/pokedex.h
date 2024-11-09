@@ -13,19 +13,20 @@
 
     To Do:
     - Insert
-    - Destructor
-    - Read from file
+   
 
     To Test:
     - Append
     - Import
     - Remove
     - getByIndex
+    
 
     ---- DONE! ----
     - Public Friend Function (operator <<)
     - Private Root Node
     - Private Node Struct
+    - View Root Function
    
 */
 
