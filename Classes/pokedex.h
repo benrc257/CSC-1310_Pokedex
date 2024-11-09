@@ -59,6 +59,7 @@ class Pokedex {
         bool appendNode(Node<Y>* append);
         void remove(Node<Y>* removing);
         void inOrderTraversal(Node<Y>* node);
+        void deleteTree(Node<Y>* node);
 
         //util
         void display();
@@ -72,9 +73,7 @@ class Pokedex {
         
 
         ~Pokedex() {
-            for (Node<Y>* node : pokedex) {
-                delete node;  
-            }
+            deleteTree(root);
         }
 
 };
@@ -89,7 +88,7 @@ template <typename Y>
 Node<Y>* Pokedex<Y>::getByIndex(int index) {
     Node<Y>* check = root;
 
-    while ((check != nullptr))// if not end
+    while (check != nullptr)// if not end
     {
         if (check->object.id == index){
             return check; // return if found
@@ -102,14 +101,12 @@ Node<Y>* Pokedex<Y>::getByIndex(int index) {
     return nullptr;
 }
 
-
-
 template <typename Y> //TODO
 void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
 };
 
-// append pokemon, makes a pokemon object then calls append node
+// appendPokemon: makes a pokemon object then calls append node
 template <typename Y>
 bool Pokedex<Y>::appendPokemon(string name,int id){
     Node<Y>* newNode = new Node<Y>(nullptr, nullptr, nullptr, Y(name, id));
@@ -162,8 +159,7 @@ void Pokedex<Y>::import(string filename, char delim, Y pokemon){
     file.open(filename);
 
     if (!file.is_open()) {
-        cerr << "Error: Could not open file " << filename << endl;
-        return;
+        throw runtime_error("Error: Could not open file " + filename);
     }
 
     while (getline(file,temp1,delim) && getline(file,temp2,delim)){ // constructs a new pokemon
@@ -174,7 +170,7 @@ void Pokedex<Y>::import(string filename, char delim, Y pokemon){
 
 template <typename Y>
 void Pokedex<Y>::remove(Node<Y>* removing) {
-    if (removing == nullptr) return;
+    if (removing == nullptr) return;  // If the node to remove doesn't exist, return.
 
     // Case 1: Node is a leaf (no children)
     if (removing->left == nullptr && removing->right == nullptr) {
@@ -185,57 +181,52 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
                 removing->parent->right = nullptr;
             }
         } else {
-            root = nullptr; // If it's the root node
+            root = nullptr;  // If the node is the root
         }
-        delete removing;
+        delete removing;  // Deallocate memory
         return;
+    }
 
-    // Case 2: Node has only one child
-    } else if (removing->left != nullptr && removing->right == nullptr) { // Only left child
+    // Case 2: Node has only one child (left or right)
+    else if (removing->left == nullptr || removing->right == nullptr) {
+        Node<Y>* child;
+
+        if (removing->left != nullptr) {
+            child = removing->left;
+        } else {
+            child = removing->right;
+        }
+
         if (removing->parent) {
             if (removing->parent->left == removing) {
-                removing->parent->left = removing->left;
+                removing->parent->left = child;
             } else {
-                removing->parent->right = removing->left;
+                removing->parent->right = child;
             }
-            removing->left->parent = removing->parent;
         } else {
-            root = removing->left; // If it's the root node
-            root->parent = nullptr;
+            root = child;  // If the node is the root
         }
-        delete removing;
-        return;
 
-    } else if (removing->left == nullptr && removing->right != nullptr) { // Only right child
-        if (removing->parent) {
-            if (removing->parent->left == removing) {
-                removing->parent->left = removing->right;
-            } else {
-                removing->parent->right = removing->right;
-            }
-            removing->right->parent = removing->parent;
-        } else {
-            root = removing->right; // If it's the root node
-            root->parent = nullptr;
-        }
-        delete removing;
+        child->parent = removing->parent;  // Update the parent of the child
+        delete removing;  // Deallocate memory
         return;
+    }
 
-    // Case 3: Node has two children
-    } else {
+    // Case 3: Node has two children (find in-order successor)
+    else {
         // Find the in-order successor (smallest node in the right subtree)
         Node<Y>* successor = removing->right;
         while (successor->left != nullptr) {
             successor = successor->left;
         }
 
-        // Copy the successor's data to the node to be deleted
+        // Copy the successor's data into the current node
         removing->object = successor->object;
 
-        // Recursively delete the successor, which now has at most one child
+        // Recursively remove the successor (it can have at most one child)
         remove(successor);
     }
-}
+};
 
 template <typename Y>
 void Pokedex<Y>::inOrderTraversal(Node<Y>* node) {
@@ -250,5 +241,16 @@ void Pokedex<Y>::display() {
     inOrderTraversal(root);  // Start the in-order traversal from the root
 }
 
+template <typename Y>
+void Pokedex<Y>::deleteTree(Node<Y>* node) {
+    if (node != nullptr) {
+        
+        deleteTree(node->left);// Recursively delete left and right children
+        deleteTree(node->right);
+
+        // Finally, delete the current node
+        delete node;
+    }
+}
 
 #endif
