@@ -58,7 +58,7 @@ class Pokedex {
         void insert(Node<Y>* insert, Node<Y>* position);
         bool appendPokemon(string Name, int Id);
         bool appendNode(Node<Y>* append);
-        void remove(Node<Y>* removing);
+        bool remove(Node<Y>* removing);
         void inOrderTraversal(Node<Y>* node);
         void deleteTree(Node<Y>* node);
 
@@ -99,14 +99,14 @@ Node<Y>* Pokedex<Y>::getByIndex(int index) {
         if (check->object == temp){
             delete temp;
             return check; // return if found
-        } else if (check->object > temp){
-            check = check->left; // left if bigger
+        } else if (check->object < temp){
+            check = check->left; // left if smaller
         } else {
-            check = check->right; // right if smaller
+            check = check->right; // right if bigger
         } 
     }
     delete temp;
-    return nullptr;
+    return check;
 }
 
 // insert: Inserts a copy of insert's data after position. You should use remove to delete insert after this.
@@ -164,12 +164,16 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 // appendPokemon: makes a pokemon object then calls append node
 template <typename Y>
 bool Pokedex<Y>::appendPokemon(string name,int id){
+    bool success;
     Y *newY = new Y(name, id);
+
     Node<Y> *newNode = new Node<Y>(nullptr, nullptr, nullptr, newY);
-        bool success = appendNode(newNode);
+    success = appendNode(newNode);
+
     if (!success) {
         delete newNode;  // Free memory if appending fails
     }
+
     return success;
 };
 
@@ -184,16 +188,18 @@ bool Pokedex<Y>::appendNode(Node<Y>* append) {
     }
 
     while (check != nullptr) {
-        if (check->object > append->object) { // Larger goes on the left
+        if (check->object < append->object) { // Smaller goes on the left
             if (check->left == nullptr) { // If left is empty, insert here
                 check->left = append;
+                append->parent = check;
                 return true; // End early
             } else { // Otherwise, continue traversing left
                 check = check->left;
             }
-        } else if (check->object < append->object) { // Smaller goes on the right
+        } else if (check->object > append->object) { // Larger goes on the right
             if (check->right == nullptr) { // If right is empty, insert here
                 check->right = append;
+                append->parent = check;
                 return true; // End early
             } else { // Otherwise, continue traversing right
                 check = check->right;
@@ -228,8 +234,8 @@ void Pokedex<Y>::import(string filename, char delim){
 };
 
 template <typename Y>
-void Pokedex<Y>::remove(Node<Y>* removing) {
-    if (removing == nullptr) return;  // If the node to remove doesn't exist, return.
+bool Pokedex<Y>::remove(Node<Y>* removing) {
+    if (removing == nullptr) return false;  // If the node to remove doesn't exist, return false.
 
     // Case 1: Node is a leaf (no children)
     if (removing->left == nullptr && removing->right == nullptr) {
@@ -243,7 +249,7 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
             root = nullptr;  // If the node is the root
         }
         delete removing;  // Deallocate memory
-        return;
+        return true;
     }
 
     // Case 2: Node has only one child (left or right)
@@ -268,13 +274,13 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
 
         child->parent = removing->parent;  // Update the parent of the child
         delete removing;  // Deallocate memory
-        return;
+        return true;
     }
 
     // Case 3: Node has two children (find in-order successor)
     else {
-        // Find the in-order successor (smallest node in the right subtree)
-        Node<Y>* successor = removing->right;
+        // Find the in-order successor (smallest node in the left subtree)
+        Node<Y>* successor = removing->left;
         while (successor->left != nullptr) {
             successor = successor->left;
         }
@@ -284,6 +290,7 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
 
         // Recursively remove the successor (it can have at most one child)
         remove(successor);
+        return true;
     }
 };
 

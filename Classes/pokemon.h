@@ -40,7 +40,7 @@
         }
 
         friend bool operator==(Pokemon& poke1, Pokemon& poke2) { // == comparison of ids
-            if (poke1.getId() == poke2.getId()) {
+            if (poke1.id == poke2.id) {
                 return true;
             }
 
@@ -48,14 +48,14 @@
         }
 
         friend bool operator<(Pokemon& poke1, Pokemon& poke2) { // < comparison of ids
-            if (poke1.getId() < poke2.getId()) {
+            if (poke1.id < poke2.id) {
                 return true;
             }
             return false;
         }
         
         friend bool operator>(Pokemon& poke1, Pokemon& poke2) { // > comparison of ids
-            if (poke1.getId() > poke2.getId()) {
+            if (poke1.id > poke2.id) {
                 return true;
             }
             return false;

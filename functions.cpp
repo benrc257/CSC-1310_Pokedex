@@ -8,21 +8,19 @@ int mainMenu(){
     bool valid = 0;
 
     cout << LINE << "\n Main Menu:"
-        << "\n 1: Display entries"
+        << "\n 1: Display Entries"
         << "\n 2: Add a Pokemon"
         << "\n 3: Remove a Pokemon" 
         << "\n 4: Add Pokemon From File"
-        << "\n 5: END program\n"
-        << "\n enter a number between 1-4\n";
-    cin >> choice;
-    cin.ignore();
-        
-    if(!((choice < 6) && (choice > 0))){
-        cout << "\n --- INVALID RESPONSE --- ";
-        return mainMenu();
-    } else {
-        return choice;
+        << "\n 5: END Program\n"
+        << "\n Enter a number between 1-5.\n >> ";
+    while (!(cin >> choice) || choice > 6 || choice < 1) { //input validation
+        cout << "\n Invalid choice. Please try again.\n >> ";
+        cin.clear();
+        cin.ignore(10000, '\n');
     }
+        
+    return choice;
 };
 
 
