@@ -96,7 +96,7 @@ Node<Y>* Pokedex<Y>::getByIndex(int index) {
 
     while (check != nullptr)// if not end
     {
-        if (check->object == temp){
+        if (*(check->object) == *temp){
             delete temp;
             return check; // return if found
         } else if (check->object < temp){
