@@ -99,7 +99,7 @@ Node<Y>* Pokedex<Y>::getByIndex(int index) {
         if (*(check->object) == *temp){
             delete temp;
             return check; // return if found
-        } else if (check->object < temp){
+        } else if (*(check->object) < *temp){
             check = check->left; // left if smaller
         } else {
             check = check->right; // right if bigger
