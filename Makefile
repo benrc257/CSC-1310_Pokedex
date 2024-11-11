@@ -8,17 +8,16 @@ CXXFLAGS = -c
 # file names
 functions := functions.cpp
 driver := driver.cpp
-data := data.cpp
-files := ${functions} ${driver} ${data}
+pokemon := Classes/pokemon.cpp
+files := ${functions} ${driver} ${pokemon}
 
 # object names
-output := 
+output := Pokedex
 all := all
 driverout := driver.o
 functionsout := functions.o
-dataout := data.o
-playlistout := playlist.o
-objects := ${driverout} ${functionsout} ${dataout}
+pokemonout := pokemon.o
+objects := ${driverout} ${functionsout} ${pokemonout}
 
 # Detect OS for clean
 ifdef OS
@@ -43,8 +42,8 @@ ${functionsout}: ${functions}
 	${CXX} ${CXXFLAGS} ${functions} -o ${functionsout}
 
 # Compile classes
-${dataout}: ${data}
-	${CXX} ${CXXFLAGS} ${data} -o ${dataout}
+${pokemonout}: ${pokemon}
+	${CXX} ${CXXFLAGS} ${pokemon} -o ${pokemonout}
 
 # Make clean (Removes files)
 clean:

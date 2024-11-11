@@ -19,6 +19,7 @@ using namespace std;
 
 // Global Constants
 const string LINE = "\n---------------------------------------------------------------------------------";
+const string FILENAME = "pokedex.txt";
 
 // Functions(.cpp) Prototypes
 int mainMenu();

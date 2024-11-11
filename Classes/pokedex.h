@@ -12,10 +12,9 @@
     - Constructor, Destructor
 
     To Do:
-    - Insert
-   
 
     To Test:
+    - Insert
     - Append
     - Import
     - Remove
@@ -40,8 +39,9 @@
 template <typename X>
 struct Node {
     Node *left, *right, *parent;
-    X object;
-    Node(Node* left, Node* right,Node* parent, X object){
+    X *object;
+
+    Node(Node* left, Node* right, Node* parent, X *object) {
         this->left = left;
         this->right = right;
         this->parent = parent;
@@ -52,7 +52,7 @@ struct Node {
 template <typename Y>
 class Pokedex {
     private:
-        Node<Y>* root; 
+        Node<Y> *root; 
     public:
         // Tree functions
         void insert(Node<Y>* insert, Node<Y>* position);
@@ -73,7 +73,9 @@ class Pokedex {
         void import(string Filename, char delim);
         
         //constructers && destructors
-        Pokedex()
+        Pokedex(const string filename) {
+            import(filename, '#');
+        }
 
         ~Pokedex() {
             deleteTree(root);
@@ -89,30 +91,81 @@ Node<Y>* Pokedex<Y>::getRoot() {
 
 template <typename Y>
 Node<Y>* Pokedex<Y>::getByIndex(int index) {
-    Node<Y>* check = root;
+    Node<Y> *check = root;
+    Y *temp = new Y("temp", index);
 
     while (check != nullptr)// if not end
     {
-        if (check->object.id == index){
+        if (check->object == temp){
+            delete temp;
             return check; // return if found
-        } else if (check->object.id > index){
+        } else if (check->object > temp){
             check = check->left; // left if bigger
         } else {
             check = check->right; // right if smaller
         } 
     }
+    delete temp;
     return nullptr;
 }
 
-template <typename Y> //TODO
+// insert: Inserts a copy of insert's data after position. You should use remove to delete insert after this.
+template <typename Y> 
 void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
+    Node<Y> *copy;
+
+    copy = new Node<Y>(nullptr, nullptr, position, insert->object);
+
+    if (copy->object == position->object) { //do nothing if the object is a duplicate
+        delete copy;
+        return;
+    }
+    
+    if (copy->object < position->object) { //inserts left
+
+        if (copy->object == position->left->object) { //do nothing if the object is a duplicate
+            delete copy;
+            return;
+        }
+
+        if (copy->object < position->left->object) { //if the left object is less than copy, set it to the left pointer
+            copy->left = position->left;
+        } else {  //if the left object is more than copy, set it to the right pointer
+            copy->right = position->left;
+        }
+
+        //sets position left's parent to copy
+        position->left->parent = copy;
+
+        //sets position's left pointer to copy
+        position->left = copy;
+    } else { //inserts right
+
+        if (copy->object == position->right->object) { //do nothing if the object is a duplicate
+            delete copy;
+            return;
+        }
+
+        if (copy->object < position->right->object) { //if the right object is less than copy, set it to the left pointer
+            copy->left = position->right;
+        } else {  //if the right object is more than copy, set it to the right pointer
+            copy->right = position->right;
+        }
+
+        //sets position right's parent to copy
+        position->right->parent = copy;
+
+        //sets position's right pointer to copy
+        position->right = copy;
+    }
 
 };
 
 // appendPokemon: makes a pokemon object then calls append node
 template <typename Y>
 bool Pokedex<Y>::appendPokemon(string name,int id){
-    Node<Y>* newNode = new Node<Y>(nullptr, nullptr, nullptr, Y(name, id));
+    Y *newY = new Y(name, id);
+    Node<Y> *newNode = new Node<Y>(nullptr, nullptr, nullptr, newY);
         bool success = appendNode(newNode);
     if (!success) {
         delete newNode;  // Free memory if appending fails
@@ -152,6 +205,8 @@ bool Pokedex<Y>::appendNode(Node<Y>* append) {
             return false;// end with false
         }
     }
+    
+    return false;
 }
 
 // import: overload to handle importing from a file;
@@ -162,7 +217,8 @@ void Pokedex<Y>::import(string filename, char delim){
     file.open(filename);
 
     if (!file.is_open()) {
-        throw runtime_error("Error: Could not open file " + filename);
+       cout << "\nError: Could not open file " << filename << "\n";
+       return;
     }
 
     while (getline(file,temp1,delim) && getline(file,temp2,delim)){ // constructs a new pokemon
@@ -233,7 +289,9 @@ void Pokedex<Y>::remove(Node<Y>* removing) {
 
 template <typename Y>
 void Pokedex<Y>::inOrderTraversal(Node<Y>* node) {
-    if (node == nullptr) return;  // Base case: if node is null, return.
+    if (node == nullptr) { // Base case: if node is null, return.
+        return;    
+    }
     inOrderTraversal(node->left);// Traverse left subtree
     cout << node->object;// Process current node (print object details)
     inOrderTraversal(node->right);// Traverse right subtree

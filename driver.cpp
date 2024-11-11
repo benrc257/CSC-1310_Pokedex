@@ -13,10 +13,11 @@
 
 int main() {
     cout << LINE << "/n LOADING YOUR POKEMON";
-    Pokedex<Pokemon> pokedex;
+    Pokedex<Pokemon> pokedex(FILENAME);
     string name,id;
     int choice;
-    while (mainMenu()){
+    while (choice != 5){
+        choice = mainMenu();
         switch (choice){
             case 1 : // Display entries
                 pokedex.display();

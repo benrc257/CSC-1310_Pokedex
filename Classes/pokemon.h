@@ -23,17 +23,19 @@
 
     public:
         //constructor
-            Pokemon(string Name, int Id);
+        Pokemon(string Name, int Id);
+
         //getters
-            int    getId();
-            string getName();
+        int getId();
+        string getName();
+
         //setters
-            void setId(int);
-            void setName(string);
+        void setId(int);
+        void setName(string);
 
         // Friends
-        friend ostream& operator<<(ostream& os, Pokemon& pokemon) { // prints pokemon
-            os << "\n- ID:" << pokemon.getId() << " - - NAME: " << pokemon.getName() << " -";
+        friend ostream& operator<<(ostream& os, Pokemon* pokemon) { // prints pokemon
+            os << "\n- ID:" << pokemon->getId() << " - - NAME: " << pokemon->getName() << " -";
             return os;
         }
 
@@ -44,7 +46,7 @@
 
             return false;
         }
-        
+
         friend bool operator<(Pokemon& poke1, Pokemon& poke2) { // < comparison of ids
             if (poke1.getId() < poke2.getId()) {
                 return true;
@@ -58,6 +60,7 @@
             }
             return false;
         }
+
     };
 
     

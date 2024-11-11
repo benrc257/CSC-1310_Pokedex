@@ -1,32 +1,29 @@
-
-
-// Function definitions for data.h
+// Function definitions for pokemon.h
 #include "../main.h"
 #include "pokemon.h"
 
     
-    Pokemon::Pokemon(string Name,int Id)
-    {
-        name = Name;
-        id = Id;    
-    }
+Pokemon::Pokemon(string name,int id)
+{
+    this->name = name;
+    this->id = id;    
+}
     
-    //getters
-    int Pokemon::getId(){
-        return id;
-    };
-    string Pokemon::getName(){
-        return name;
-    };
+//getters
+int Pokemon::getId(){
+    return id;
+};
+string Pokemon::getName(){
+    return name;
+};
 
-    //setters
-    void Pokemon::setId(int a){
-        id = a;
-    };
+//setters
+void Pokemon::setId(int a){
+    id = a;
+};
 
-    void Pokemon::setName(string a){
-        name = a;
-    };
+void Pokemon::setName(string a){
+    name = a;
+};
 
 
-    
