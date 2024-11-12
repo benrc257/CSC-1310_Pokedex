@@ -4,7 +4,7 @@
 
 
 int mainMenu(){
-    int choice;
+    int choice = 0;
     bool valid = 0;
 
     cout << LINE << "\n Main Menu:"
@@ -14,7 +14,7 @@ int mainMenu(){
         << "\n 4: Add Pokemon From File"
         << "\n 5: END Program\n"
         << "\n Enter a number between 1-5.\n >> ";
-    while (!(cin >> choice) || choice > 6 || choice < 1) { //input validation
+    while (!(cin >> choice) || choice > 5 || choice < 1) { //input validation
         cout << "\n Invalid choice. Please try again.\n >> ";
         cin.clear();
         cin.ignore(10000, '\n');

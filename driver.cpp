@@ -15,8 +15,8 @@ int main() {
     cout << LINE << "\n LOADING YOUR POKEMON";
     Pokedex<Pokemon> pokedex(FILENAME);
     string name;
-    int choice, id;
-    while (choice != 5){
+    int choice = 0, id;
+    do {
         choice = mainMenu();
         switch (choice){
             case 1 : // Display entries
@@ -27,13 +27,13 @@ int main() {
                 cin.ignore();
                 getline(cin,name);
                 cout << "\n Enter the ID for the Pokemon.\n >> ";
-                while (!(cin >> id) || id < 0) { //input validation
-                    cout << "\nInvalid ID. Please enter an integer. >> ";
+                while (!(cin >> id) || id < 0 || !pokedex.appendPokemon(name, id)) { //input validation
+                    cout << "\nInvalid or duplicate ID. Please enter a positive, unused ID. >> ";
                     cin.clear();
                     cin.ignore(10000, '\n');
                 }
-                pokedex.appendPokemon(name, id);
-            break;
+                cout << "Pokemon added!\n";
+                break;
             case 3 : // Remove a Pokemon
                 cout << "\n Enter the ID of the Pokemon you wish to remove.\n >> ";
                 while (!(cin >> id) || id < 0) { //input validation
@@ -44,15 +44,16 @@ int main() {
                 pokedex.remove(pokedex.getByIndex(id));
                 break;
             case 4 : // Add Pokemon From File
-                cout << "\n Enter the name of the file you want to import from.\n >> ";
+                cout << "\n Enter the name of the file you want to import from. Note that duplicate IDs will be ignored.\n >> ";
                 cin.ignore();
                 getline(cin,name);
                 pokedex.import(name,'#');
-                break;   
+                break;
             case 5 : // END
                 cout << LINE << "\n Goodbye!" << LINE;
                 return 0; // end
                 break;
         }
-    }
+    } while (choice != 5);
+    return 0;
 }

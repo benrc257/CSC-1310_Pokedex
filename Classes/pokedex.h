@@ -116,19 +116,19 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
 
     copy = new Node<Y>(nullptr, nullptr, position, insert->object);
 
-    if (copy->object == position->object) { //do nothing if the object is a duplicate
+    if (*copy->object == *position->object) { //do nothing if the object is a duplicate
         delete copy;
         return;
     }
     
-    if (copy->object < position->object) { //inserts left
+    if (*copy->object < *position->object) { //inserts left
 
-        if (copy->object == position->left->object) { //do nothing if the object is a duplicate
+        if (*copy->object == *position->left->object) { //do nothing if the object is a duplicate
             delete copy;
             return;
         }
 
-        if (copy->object < position->left->object) { //if the left object is less than copy, set it to the left pointer
+        if (*copy->object < *position->left->object) { //if the left object is less than copy, set it to the left pointer
             copy->left = position->left;
         } else {  //if the left object is more than copy, set it to the right pointer
             copy->right = position->left;
@@ -141,12 +141,12 @@ void Pokedex<Y>::insert(Node<Y>* insert, Node<Y>* position){
         position->left = copy;
     } else { //inserts right
 
-        if (copy->object == position->right->object) { //do nothing if the object is a duplicate
+        if (*copy->object == *position->right->object) { //do nothing if the object is a duplicate
             delete copy;
             return;
         }
 
-        if (copy->object < position->right->object) { //if the right object is less than copy, set it to the left pointer
+        if (*copy->object < *position->right->object) { //if the right object is less than copy, set it to the left pointer
             copy->left = position->right;
         } else {  //if the right object is more than copy, set it to the right pointer
             copy->right = position->right;
@@ -188,7 +188,7 @@ bool Pokedex<Y>::appendNode(Node<Y>* append) {
     }
 
     while (check != nullptr) {
-        if (check->object < append->object) { // Smaller goes on the left
+        if (*check->object < *append->object) { // Smaller goes on the left
             if (check->left == nullptr) { // If left is empty, insert here
                 check->left = append;
                 append->parent = check;
@@ -196,7 +196,7 @@ bool Pokedex<Y>::appendNode(Node<Y>* append) {
             } else { // Otherwise, continue traversing left
                 check = check->left;
             }
-        } else if (check->object > append->object) { // Larger goes on the right
+        } else if (*check->object > *append->object) { // Larger goes on the right
             if (check->right == nullptr) { // If right is empty, insert here
                 check->right = append;
                 append->parent = check;
@@ -204,10 +204,8 @@ bool Pokedex<Y>::appendNode(Node<Y>* append) {
             } else { // Otherwise, continue traversing right
                 check = check->right;
             }
-        } else if (check->object == append->object) { // Node with the same id exists
-               cout << "\n------------------- ERROR ----------------------\n"
-                      << "  A Pokemon already exists with the same entry\n"
-                      << "------------------------------------------------\n";
+        } else if (*check->object == *append->object) { // Node with the same id exists
+            //do nothing
             return false;// end with false
         }
     }
@@ -299,9 +297,9 @@ void Pokedex<Y>::inOrderTraversal(Node<Y>* node) {
     if (node == nullptr) { // Base case: if node is null, return.
         return;    
     }
-    inOrderTraversal(node->left);// Traverse left subtree
+    inOrderTraversal(node->right);// Traverse left subtree
     cout << node->object;// Process current node (print object details)
-    inOrderTraversal(node->right);// Traverse right subtree
+    inOrderTraversal(node->left);// Traverse right subtree
 }
 
 template <typename Y>
