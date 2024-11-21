@@ -1,5 +1,5 @@
 /*
-    Program: -----
+    Program: Pokedex
     Authors: Benjamin Clark, Lucas Starkey
     Date: 11/7/24
 */

@@ -1,0 +1,2 @@
+# Pokedex Project
+This program will intake files of pokemon and sort them into a tree, then display, add, and remove pokemon in accordance with user input. Created by Benjamin Clark and Lucas Starkey for CSC 1310.
